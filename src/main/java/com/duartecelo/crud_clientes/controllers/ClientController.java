@@ -39,7 +39,7 @@ public class ClientController {
                 .path("/{id}")
                 .buildAndExpand(client.getId())
                 .toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(client);
     }
 
     @PutMapping(value = "/{id}")

@@ -23,7 +23,7 @@ public class ClientService {
     public Client findById(Long id) {
         return clientRepository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente inexistente ou já deletado"));
     }
 
     @Transactional
@@ -47,15 +47,17 @@ public class ClientService {
             originClient.setBirthDate(updatedClient.getBirthDate());
             originClient.setChildren(updatedClient.getChildren());
 
+            originClient = clientRepository.save(originClient);
+
             return originClient;
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Recurso não encontrado");
+            throw new ResourceNotFoundException("Cliente inexistente ou já deletado");
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        if (!clientRepository.existsById((id))) throw new ResourceNotFoundException("Recurso não encontrado");
+        if (!clientRepository.existsById((id))) throw new ResourceNotFoundException("Cliente inexistente ou já deletado");
         try {
             clientRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {

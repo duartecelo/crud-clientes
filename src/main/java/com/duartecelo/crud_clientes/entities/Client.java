@@ -1,27 +1,25 @@
 package com.duartecelo.crud_clientes.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "tb_client")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Campo não pode estar em branco")
     private String name;
 
     private String cpf;
     private Double income;
-    @PastOrPresent
+    @PastOrPresent(message = "A data de nascimento não pode ser futura")
     private LocalDate birthDate;
 
     private Integer children;
